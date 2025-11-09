@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Poppins, Ibarra_Real_Nova } from 'next/font/google'
 import "./globals.css";
+import { Header } from "@/components/Header";
 
 const poppins = Poppins({
   subsets: ['latin'],
@@ -27,7 +28,12 @@ export default function RootLayout({
   return (
     <html lang="pt-br" className={`${poppins.variable} ${ibarra.variable}`}>
       <body className={poppins.className}>
-        {children}
+        <div className={ibarra.className}>
+          <Header />
+        </div>
+        <main className="container mx-auto p-4">
+          {children}
+        </main>
       </body>
     </html>
   );
