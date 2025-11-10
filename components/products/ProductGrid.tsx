@@ -1,0 +1,11 @@
+'use client';
+
+import { ReactNode } from "react";
+
+export default function ProductGrid({ children }: { children: ReactNode }) {
+  return (
+    <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {children}
+    </div>
+  );
+}
