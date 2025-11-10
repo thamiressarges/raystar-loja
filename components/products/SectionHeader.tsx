@@ -1,14 +1,15 @@
-'use client';
-
 import Link from "next/link";
 
-export default function SectionHeader({
-  title,
-  href,
-}: { title: string; href?: string }) {
+interface Props {
+  title: string;
+  href?: string;
+}
+
+export default function SectionHeader({ title, href }: Props) {
   return (
     <div className="mb-4 flex items-center justify-between">
       <h2 className="text-2xl md:text-3xl font-semibold text-black">{title}</h2>
+
       {href && (
         <Link
           href={href}

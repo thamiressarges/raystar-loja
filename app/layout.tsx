@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Poppins, Ibarra_Real_Nova } from 'next/font/google'
 import "./globals.css";
 import { Header } from "@/components/Header";
+import Footer from "@/components/Footer";
 
 const poppins = Poppins({
   subsets: ['latin'],
@@ -34,6 +35,7 @@ export default function RootLayout({
         <main className="container mx-auto p-4">
           {children}
         </main>
+        < Footer />
       </body>
     </html>
   );
