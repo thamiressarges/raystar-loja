@@ -5,11 +5,9 @@ import { Variation } from '@/types';
 import { useProductDetails } from '@/lib/contexts/ProductDetailsContext';
 import RatingStars from '@/components/products/RatingStars';
 
-
 function groupVariationsByColor(variations: Variation[]) {
   const map = new Map<string, Variation[]>();
   variations.forEach(v => {
-    
     if (!v.color || !v.size) return; 
     
     if (!map.has(v.color)) map.set(v.color, []);
@@ -27,13 +25,14 @@ export default function ProductVariationSelector() {
     reviewCount,
     selectedVariation,
     setSelectedVariation,
-    
   } = useProductDetails();
 
   const availableVariations = useMemo(
     () => groupVariationsByColor(variations),
     [variations]
   );
+
+  if (!product) return null;
 
   return (
     <section className="w-full rounded-lg border border-gray-200 bg-white p-6 md:p-8">
