@@ -68,7 +68,7 @@ export function ProductDetailsProvider({
     if (!color || !size) return; 
 
     const found = variations.find(
-      v => v.cor === color && v.tamanho === size
+      v => v.color === color && v.size === size
     );
 
     if (found) {
@@ -91,8 +91,8 @@ export function ProductDetailsProvider({
   const handleSetSelectedVariation = (v: Variation | null) => {
     setSelectedVariation(v);
     if (v) {
-      if (v.cor) setSelectedColor(v.cor);
-      if (v.tamanho) setSelectedSize(v.tamanho);
+      if (v.color) setSelectedColor(v.color);
+      if (v.size) setSelectedSize(v.size);
     }
   };
 
@@ -112,7 +112,6 @@ export function ProductDetailsProvider({
 
     const productImage = product.photos && product.photos.length > 0 ? product.photos[0] : undefined;
 
-    
     const cartItem: CartItem = {
       id: selectedVariation ? selectedVariation.id : product.id,
       product_id: product.id, 

@@ -14,8 +14,8 @@ export default function ProductGallery({ photos }: ProductGalleryProps) {
   const { selectedVariation } = useProductDetails();
 
   useEffect(() => {
-    if (selectedVariation?.cor) {
-      const normalizedColor = selectedVariation.cor.toLowerCase().split(' ')[0];
+    if (selectedVariation?.color) {
+      const normalizedColor = selectedVariation.color.toLowerCase().split(' ')[0];
       const matchingPhoto = imageList.find(photo =>
         photo.toLowerCase().includes(normalizedColor)
       );
