@@ -1,7 +1,7 @@
 'use client';
 
 import { MapPin, Check, CreditCard, QrCode, Ticket, Package, Store } from 'lucide-react';
-import { CartItem } from '@/lib/contexts/CartContext';
+import { CartItem } from '@/types';
 import { formatPrice } from '@/lib/utils';
 
 interface AddressData {

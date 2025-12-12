@@ -3,6 +3,8 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { CartItem } from '@/types';
 
+export type { CartItem };
+
 interface CartContextType {
   items: CartItem[];
   addItem: (item: CartItem) => void;
