@@ -10,7 +10,6 @@ export function Banner() {
 
         <div className="flex flex-col md:flex-row items-center gap-10 bg-white">
           
-          {/* TEXTO */}
           <div className="flex flex-col gap-6 md:w-1/2">
             <h1 className="text-5xl font-bold tracking-tight">
               Estilo que inspira.
@@ -28,7 +27,6 @@ export function Banner() {
             </Link>
           </div>
 
-          {/* IMAGEM */}
           <div className="relative w-full md:w-1/2 h-72 md:h-[420px] rounded-3xl overflow-hidden shadow-lg">
             <Image
               src="/banner/banner.jpg"
