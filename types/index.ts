@@ -3,6 +3,7 @@ export interface Category {
   name: string;
   slug: string;
   is_active?: boolean;
+  products?: Product[];
 }
 
 export interface Variation {

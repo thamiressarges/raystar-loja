@@ -6,12 +6,9 @@ import ProductGrid from "@/components/products/ProductGrid";
 import ProductCard from "@/components/products/ProductCard";
 import { Product, Category } from "@/types";
 
-interface CategoryWithProducts extends Category {
-  products: Product[];
-}
 
 interface CategorySectionListProps {
-  categories: CategoryWithProducts[];
+  categories: Category[];
 }
 
 export default function CategorySectionList({ categories }: CategorySectionListProps) {
