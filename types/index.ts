@@ -9,8 +9,8 @@ export interface Variation {
   id: string;
   product_id: string;
   price: number;
-  size: string | null;
-  color: string | null;
+  size: string | null; 
+  color: string | null; 
   stock: number;
   is_available: boolean;
 }
@@ -43,6 +43,16 @@ export interface CartItem {
   store_id?: string;
 }
 
+export interface UserAddress {
+  street: string;
+  number: string;
+  neighborhood: string;
+  complement?: string;
+  city: string;
+  state: string;
+  zip: string; 
+}
+
 export interface UserDetails {
   uid: string;
   name: string | null;
@@ -51,16 +61,6 @@ export interface UserDetails {
   phone: string | null;
   birth_date: string | null;
   address: UserAddress | null;
-}
-
-export interface UserAddress {
-  street: string;
-  number: string;
-  neighborhood: string;
-  complement?: string;
-  city: string;
-  state: string;
-  zip: string;
 }
 
 export interface Review {
@@ -74,15 +74,31 @@ export interface Review {
   user_name?: string;
 }
 
-export interface Order {
+export type OrderStatus = 
+  | 'pending' | 'aguardando_pagamento' | 'pedido_criado'
+  | 'paid' | 'pago' | 'pagamento_confirmado' | 'succeeded'
+  | 'preparing' | 'preparando_pedido' | 'em_andamento'
+  | 'shipped' | 'enviado' | 'out_for_delivery' | 'saiu_para_entrega'
+  | 'delivered' | 'entregue'
+  | 'canceled' | 'cancelado' | 'falhou' | 'failed' | 'pagamento_recusado' | 'devolvido';
+
+export interface PaymentInfo {
   id: string;
-  client_id: string;
-  status: OrderStatus;
-  created_at: string;
-  total_amount: number;
-  items: OrderItem[];
-  delivery?: DeliveryInfo;
-  payment?: PaymentInfo;
+  status: string;
+  method: 'card' | 'cartao' | 'pix' | 'boleto'; 
+  value: number;
+  installments: number;
+  payload?: any;
+}
+
+export interface DeliveryInfo {
+  id: string;
+  status: string;
+  tracking_code: string | null;
+  cost: number;
+  type: 'delivery' | 'pickup';
+  address?: UserAddress;
+  deadline_days?: number;
 }
 
 export interface OrderItem {
@@ -97,33 +113,16 @@ export interface OrderItem {
   image?: string;
 }
 
-export interface DeliveryInfo {
+export interface Order {
   id: string;
-  status: string;
-  tracking_code: string | null;
-  cost: number;
-  type: 'delivery' | 'pickup';
-  address?: UserAddress;
-  deadline_days?: number;
+  client_id: string;
+  status: OrderStatus; 
+  created_at: string;
+  total_amount: number;
+  items: OrderItem[];
+  delivery?: DeliveryInfo;
+  payment?: PaymentInfo;
 }
-
-export interface PaymentInfo {
-  id: string;
-  status: string;
-  method: 'card' | 'pix' | 'boleto';
-  value: number;
-  installments: number;
-  payload?: any;
-}
-
-export type OrderStatus = 
-  | 'pending' 
-  | 'aguardando_pagamento' 
-  | 'paid' 
-  | 'preparing' 
-  | 'shipped' 
-  | 'delivered' 
-  | 'canceled';
 
 export interface StoreInfo {
   id?: string; 
@@ -149,4 +148,10 @@ export interface CheckoutState {
   orderId?: string;
   pix?: { qr_code: string; qr_code_url: string };
   boleto?: { url: string; barcode: string };
+}
+
+export interface FormState {
+  status: 'success' | 'error' | 'idle';
+  message: string;
+  errors?: Record<string, string[]>;
 }
