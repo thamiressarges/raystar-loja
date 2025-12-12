@@ -4,8 +4,8 @@ export function checkProfilePending(user: UserDetails | null) {
   if (!user) return false;
 
   const isBasicInfoMissing = !user.cpf || !user.phone || !user.birth_date;
-  const addr = user.address || {};
-  
+  const addr = (user.address || {}) as any;
+
   const isAddressMissing = 
     !addr.street || 
     !addr.number || 
