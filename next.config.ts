@@ -8,7 +8,7 @@ const nextConfig = {
       },
       {
         protocol: "https",
-        hostname: "placehold.co", // caso queira usar outro gerador no futuro
+        hostname: "placehold.co", 
       },
       {
         protocol: "https",

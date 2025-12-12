@@ -19,16 +19,13 @@ function SearchBar({ mobile = false, onSearch }: { mobile?: boolean, onSearch?: 
   const pathname = usePathname(); 
   const [term, setTerm] = useState("");
 
-  
   useEffect(() => {
-    
     if (pathname === '/busca') {
         const query = searchParams.get('q');
         if (query) {
             setTerm(query);
         }
     } else {
-        
         setTerm("");
     }
   }, [pathname, searchParams]); 
@@ -114,7 +111,7 @@ export function Header({ isLoggedIn }: HeaderProps) {
         .single();
 
       if (userProfile) {
-        const isPending = checkProfilePending(userProfile);
+        const isPending = checkProfilePending(userProfile as any);
         setHasPendingData(isPending);
       }
     }
@@ -194,7 +191,7 @@ export function Header({ isLoggedIn }: HeaderProps) {
 
           {isLoggedIn ? (
             <Link 
-              href="/account" 
+              href="/conta" 
               onClick={toggleMenu} 
               className="flex items-center gap-3 p-2 rounded-lg text-gray-700 hover:bg-gray-100 font-medium"
             >

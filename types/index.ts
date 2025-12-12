@@ -10,8 +10,8 @@ export interface Variation {
   id: string;
   product_id: string;
   price: number;
-  size: string | null; 
-  color: string | null; 
+  size: string | null;
+  color: string | null;
   stock: number;
   is_available: boolean;
 }
@@ -51,7 +51,7 @@ export interface UserAddress {
   complement?: string;
   city: string;
   state: string;
-  zip: string; 
+  zip: string;
 }
 
 export interface UserDetails {
@@ -86,7 +86,7 @@ export type OrderStatus =
 export interface PaymentInfo {
   id: string;
   status: string;
-  method: 'card' | 'cartao' | 'pix' | 'boleto'; 
+  method: 'card' | 'cartao' | 'pix' | 'boleto';
   value: number;
   installments: number;
   payload?: any;
@@ -117,7 +117,7 @@ export interface OrderItem {
 export interface Order {
   id: string;
   client_id: string;
-  status: OrderStatus; 
+  status: OrderStatus;
   created_at: string;
   total_amount: number;
   items: OrderItem[];

@@ -4,8 +4,7 @@ import { useState } from "react";
 import SectionHeader from "@/components/products/SectionHeader";
 import ProductGrid from "@/components/products/ProductGrid";
 import ProductCard from "@/components/products/ProductCard";
-import { Product, Category } from "@/types";
-
+import { Category } from "@/types";
 
 interface CategorySectionListProps {
   categories: Category[];
