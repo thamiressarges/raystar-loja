@@ -1,86 +1,59 @@
-'use client';
+"use client";
 
 import Link from "next/link";
 import { useRef } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { Category as CategoryType } from "@/types";
 
-export default function CategoryList() {
-  const categories = [
-    "Blusas",
-    "Saias",
-    "Bermudas",
-    "Shorts",
-    "Casacos",
-    "Acessórios",
-  ];
-
+export default function Category({ categories }: { categories: CategoryType[] }) {
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  const scrollLeft = () => {
-    scrollRef.current?.scrollBy({ left: -300, behavior: "smooth" });
-  };
-
-  const scrollRight = () => {
-    scrollRef.current?.scrollBy({ left: 300, behavior: "smooth" });
-  };
+  const scrollLeft = () => scrollRef.current?.scrollBy({ left: -300, behavior: "smooth" });
+  const scrollRight = () => scrollRef.current?.scrollBy({ left: 300, behavior: "smooth" });
+  
+  if (!categories || categories.length === 0) return null;
 
   return (
-    <div className="flex items-center gap-2 w-full py-6">
-
-      {/* Seta esquerda */}
-      <button
-        onClick={scrollLeft}
-        className="bg-white border border-black rounded-full p-2 shadow-sm"
-      >
-        <ChevronLeft size={18} />
-      </button>
-
-      {/* WRAPPER DO SCROLL */}
-      <div 
-        ref={scrollRef}
-        className="
-          flex-1
-          overflow-x-auto
-          whitespace-nowrap
-          no-scrollbar
-        "
-      >
-        {/* CONTEÚDO INTERNO (CENTRALIZA NO DESKTOP) */}
-        <div
-          className="
-            flex gap-3
-            w-max
-            mx-auto
-            md:justify-center
-          "
+    <div className="container mx-auto px-4 flex flex-col gap-3 w-full py-8 mb-4">
+      <div className="flex items-center gap-2">
+        <button
+          onClick={scrollLeft}
+          className="bg-white border border-gray-300 rounded-full p-2 shadow-sm hover:bg-gray-100 transition hidden md:block"
+          aria-label="scroll-left"
         >
-          {categories.map((cat) => (
-            <Link
-              key={cat}
-              href={`/categoria/${cat.toLowerCase()}`}
-              className="
-                px-4 py-2
-                rounded-full
-                border border-black
-                text-black text-sm
-                hover:bg-black hover:text-white
-                transition
-              "
-            >
-              {cat}
-            </Link>
-          ))}
+          <ChevronLeft size={18} />
+        </button>
+
+        <div 
+          ref={scrollRef} 
+          className="flex-1 overflow-x-auto whitespace-nowrap no-scrollbar scroll-smooth"
+        >
+          <div className="flex gap-3 w-max md:mx-auto">
+            {categories.map((cat) => {
+              
+              const urlSlug = cat.slug || 'slug-ausente'; 
+
+              return (
+                <Link
+                  key={cat.id}
+                  href={`/categoria/${urlSlug}`}
+                  className="px-5 py-2 rounded-full border border-gray-300 bg-white text-black text-sm font-medium hover:bg-black hover:text-white hover:border-black transition-colors duration-200"
+                >
+                  {cat.name}
+                </Link>
+              );
+            })}
+          </div>
         </div>
+
+        <button
+          onClick={scrollRight}
+          className="bg-white border border-gray-300 rounded-full p-2 shadow-sm hover:bg-gray-100 transition hidden md:block"
+          aria-label="scroll-right"
+        >
+          <ChevronRight size={18} />
+        </button>
       </div>
-
-      {/* Seta direita */}
-      <button
-        onClick={scrollRight}
-        className="bg-white border border-black rounded-full p-2 shadow-sm"
-      >
-        <ChevronRight size={18} />
-      </button>
-
     </div>
   );
 }
