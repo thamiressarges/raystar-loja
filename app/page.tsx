@@ -1,42 +1,15 @@
-import SectionHeader from "@/components/products/SectionHeader";
-import ProductGrid from "@/components/products/ProductGrid";
-import ProductCard from "@/components/products/ProductCard";
 import { Banner } from "@/components/Banner";
+import CategorySectionList from "@/components/products/CategorySectionList";
 import Category from "@/components/Category";
+import { getCategoriesWithProducts } from "@/services/product";
 
-export default function Home() {
+export default async function Home() {
+  const allCategories = await getCategoriesWithProducts();
   return (
     <>
       <Banner />
-
-      < Category />
-
-      <section className="container mx-auto px-4 py-8">
-        <SectionHeader title="Blusas" href="/categoria/blusas" />
-        <ProductGrid>
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-        </ProductGrid>
-      </section>
-
-      <section className="container mx-auto px-4 py-8">
-        <SectionHeader title="Saias" href="/categoria/saias" />
-        <ProductGrid>
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-        </ProductGrid>
-      </section>
-
-      <section className="container mx-auto px-4 py-8">
-        <SectionHeader title="Bermudas" href="/categoria/bermudas" />
-        <ProductGrid>
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-        </ProductGrid>
-      </section>
+      <Category categories={allCategories} />
+      <CategorySectionList categories={allCategories} />
     </>
   );
 }
