@@ -28,7 +28,6 @@ interface DeleteAccountModalProps {
     isPending: boolean;
 }
 
-
 function safeStr(value: any): string {
   if (value === null || value === undefined) return '';
   return String(value);
@@ -114,9 +113,9 @@ export default function MyDetails({ userDetails, onDetailsSaved, updateUserDetai
   const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false); 
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false); 
   
-  
   const getInitialFormData = (details: UserDetails) => {
-    const addr = details.address || {};
+    // CORREÇÃO AQUI: Adicionado 'as any' para evitar erro de tipo em objeto vazio
+    const addr = details.address || {} as any;
     return {
       name: safeStr(details.name),
       email: safeStr(details.email), 
@@ -160,7 +159,6 @@ export default function MyDetails({ userDetails, onDetailsSaved, updateUserDetai
   const handleSaveDetails = () => {
     const { address } = formData;
     
-    
     const hasAnyAddressField = 
         address.street.trim() || 
         address.number.trim() || 
@@ -179,7 +177,6 @@ export default function MyDetails({ userDetails, onDetailsSaved, updateUserDetai
         if (!address.zip.trim()) missingFields.push("CEP");
 
         if (missingFields.length > 0) {
-            
             if (missingFields.length === 1 && missingFields[0] === "Número") {
                 toast.warn("Preencha o campo número");
             } else {
@@ -190,7 +187,6 @@ export default function MyDetails({ userDetails, onDetailsSaved, updateUserDetai
     }
 
     startTransition(async () => {
-      
       const payload = {
         name: safeStr(formData.name),
         cpf: safeStr(formData.cpf),
@@ -245,7 +241,6 @@ export default function MyDetails({ userDetails, onDetailsSaved, updateUserDetai
 
   return (
     <div className="w-full space-y-8">
-      
       <ChangePasswordModal isOpen={isPasswordModalOpen} onClose={() => setIsPasswordModalOpen(false)} onSavePassword={handleSavePassword} isPending={isPending} />
       <DeleteAccountModal isOpen={isDeleteModalOpen} onClose={() => setIsDeleteModalOpen(false)} onConfirmDelete={handleDeleteAccount} isPending={isPending} />
       
