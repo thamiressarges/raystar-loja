@@ -1,6 +1,7 @@
 'use client';
 
-import { useState, useEffect, useActionState } from 'react'; 
+import { useState, useEffect } from 'react'; 
+import { useFormState } from 'react-dom';
 import { Mail, Lock, User, X, Loader2, ArrowLeft } from 'lucide-react';
 import { useUI } from '@/lib/contexts/UiContext';
 import { toast } from 'react-toastify';
@@ -33,10 +34,9 @@ export default function LoginSideMenu() {
   const { isAuthMenuOpen, setIsAuthMenuOpen } = useUI();
   const [currentView, setCurrentView] = useState<AuthView>('login');
 
-  
-  const [loginState, loginDispatch] = useActionState(loginAction, initialState);
-  const [registerState, registerDispatch] = useActionState(registerAction, initialState);
-  const [resetState, resetDispatch] = useActionState(resetPasswordAction, initialState);
+  const [loginState, loginDispatch] = useFormState(loginAction, initialState);
+  const [registerState, registerDispatch] = useFormState(registerAction, initialState);
+  const [resetState, resetDispatch] = useFormState(resetPasswordAction, initialState);
 
   let state = loginState;
   let dispatch = loginDispatch;
