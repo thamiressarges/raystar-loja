@@ -121,7 +121,7 @@ export default function CheckoutModal() {
                 <div className="flex-1 overflow-y-auto p-6 bg-gray-50">
                     {step === 1 && <Step1Review cartItems={items} subtotal={totalPrice} shippingCost={0} />}
                     {step === 2 && <Step2Delivery currentAddress={address} shippingCost={shippingCost} onAddressSelect={(a, c) => { setAddress(a); setShippingCost(c); }} />}
-                    {step === 3 && <Step3Payment selected={paymentMethod} setSelected={setPaymentMethod} onCardValidate={(v, d) => { setCardValid(v); setCardData(d); }} total={total} />}
+                    {step === 3 && <Step3Payment selected={paymentMethod} setSelected={setPaymentMethod} onCardValidate={(v, d) => { setCardValid(v); setCardData(d || null); }} total={total} />}
                     {step === 4 && <Step4Confirm cartItems={items} subtotal={totalPrice} shippingCost={shippingCost} address={address} paymentMethod={paymentMethod} />}
                 </div>
                 <div className="px-6 py-4 border-t bg-white flex justify-between items-center shrink-0">
