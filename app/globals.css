@@ -1,12 +1,18 @@
 @import "tailwindcss";
 
-/* Oculta scrollbar no Chrome/Safari */
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
 
-/* Oculta scrollbar no Firefox */
 .no-scrollbar {
   scrollbar-width: none;
   -ms-overflow-style: none;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  box-sizing: border-box;
 }
