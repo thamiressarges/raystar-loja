@@ -52,6 +52,7 @@ export interface UserAddress {
   city: string;
   state: string;
   zip: string;
+  zipCode?: string;
 }
 
 export interface UserDetails {

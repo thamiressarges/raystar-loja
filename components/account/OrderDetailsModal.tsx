@@ -21,24 +21,18 @@ const translateStatus = (status: string) => {
     pending: 'Pendente',
     aguardando_pagamento: 'Aguardando Pagamento',
     aguardando_confirmacao: 'Aguardando Confirmação',
-    
     paid: 'Pago', 
     pago: 'Pago', 
     succeeded: 'Pago',
     pagamento_confirmado: 'Pagamento Aprovado',
-    
     preparing: 'Em Separação',
     preparando_pedido: 'Em Separação',
-    
     shipped: 'Enviado', 
     enviado: 'Enviado',
-    
     out_for_delivery: 'Saiu para Entrega',
     saiu_para_entrega: 'Saiu para Entrega',
-    
     delivered: 'Entregue', 
     entregue: 'Entregue',
-    
     canceled: 'Cancelado', 
     cancelado: 'Cancelado',
     falhou: 'Falhou', 
@@ -221,7 +215,9 @@ export default function OrderDetailsModal({ isOpen, onClose, order }: OrderDetai
                                 <p className="font-bold text-gray-900 mb-1">Endereço de envio:</p>
                                 <p>{deliveryInfo.address.street}, {deliveryInfo.address.number}</p>
                                 <p>{deliveryInfo.address.neighborhood} - {deliveryInfo.address.city}/{deliveryInfo.address.state}</p>
-                                <p className="text-xs text-gray-500 mt-1">CEP: {deliveryInfo.address.zipCode || deliveryInfo.address.zip}</p>
+                                <p className="text-xs text-gray-500 mt-1">
+                                    CEP: {(deliveryInfo.address as any).zipCode || deliveryInfo.address.zip}
+                                </p>
                             </div>
                         )}
                         <div>
