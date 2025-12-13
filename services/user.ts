@@ -38,7 +38,7 @@ export async function getUserOrders(page: number = 1, limit: number = 10) {
       payments!payments_order_id_fkey ( id, status, value, form, installments, payload ),
       deliveries!deliveries_order_id_fkey ( id, status, cost, deadline_days, tracking_code, type, address ),
       order_items ( 
-        id, quantity, unit_price, total_price, variation_id, 
+        id, quantity, unit_price, total_price, variation_id, size_snapshot, color_snapshot,
         products ( title, photos ),
         variations ( tamanho, cor ) 
       ),
@@ -95,8 +95,8 @@ export async function getUserOrders(page: number = 1, limit: number = 10) {
         unit_price: item.unit_price,
         total_price: item.total_price,
         image: item.products?.photos?.[0],
-        size: item.variations?.tamanho,
-        color: item.variations?.cor
+        size: item.variations?.tamanho || item.size_snapshot,
+        color: item.variations?.cor || item.color_snapshot
       }))
     };
   });
