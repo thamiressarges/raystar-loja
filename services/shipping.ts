@@ -16,16 +16,22 @@ export async function calculateShippingService(cep: string): Promise<ShippingRes
   if (cleanCep.length !== 8) return null;
 
   try {
-    const viaCep = await fetch(`https://viacep.com.br/ws/${cleanCep}/json/`);
-    const data = await viaCep.json();
+    const response = await fetch(`https://brasilapi.com.br/api/cep/v2/${cleanCep}`, {
+      cache: 'no-store',
+      signal: AbortSignal.timeout(5000)
+    });
 
-    if (data.erro) return null;
+    if (!response.ok) {
+        return null;
+    }
+
+    const data = await response.json();
 
     const address = {
-      street: data.logradouro,
-      neighborhood: data.bairro,
-      city: data.localidade,
-      state: data.uf,
+      street: data.street,
+      neighborhood: data.neighborhood,
+      city: data.city,
+      state: data.state,
       zipCode: cleanCep
     };
 
@@ -39,7 +45,7 @@ export async function calculateShippingService(cep: string): Promise<ShippingRes
       .single();
 
     if (!rule) {
-      throw new Error("Não entregamos nesse bairro ainda.");
+      throw new Error(`Não entregamos no bairro ${address.neighborhood} ainda.`);
     }
 
     return {
@@ -48,7 +54,6 @@ export async function calculateShippingService(cep: string): Promise<ShippingRes
     };
 
   } catch (error) {
-    console.error(error);
     throw error;
   }
 }
