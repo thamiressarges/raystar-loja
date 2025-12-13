@@ -54,20 +54,28 @@ export async function processCheckout(prevState: CheckoutState, formData: any): 
     const productIds = items.map(i => i.product_id);
     const [{ data: dbProducts }, { data: dbVariations }] = await Promise.all([
       supabaseAdmin.from('products').select('id, price, title').in('id', productIds),
-      variationIds.length > 0 ? supabaseAdmin.from('variations').select('id, price, product_id').in('id', variationIds) : Promise.resolve({ data: [] })
+      variationIds.length > 0 ? supabaseAdmin.from('variations').select('id, price, product_id, tamanho, cor').in('id', variationIds) : Promise.resolve({ data: [] })
     ]);
 
     let calculatedTotalItems = 0;
     const validatedItems = items.map(item => {
       let realPrice = 0; let realTitle = item.name;
       const variation = dbVariations?.find((v: any) => v.id === item.id);
-      if (variation) { realPrice = Number(variation.price); } else {
+      
+      let variationSize = null;
+      let variationColor = null;
+
+      if (variation) { 
+        realPrice = Number(variation.price); 
+        variationSize = variation.tamanho;
+        variationColor = variation.cor;
+      } else {
         const product = dbProducts?.find((p: any) => p.id === item.product_id);
         if (!product) throw new Error(`Produto não encontrado.`);
         realPrice = Number(product.price); realTitle = product.title;
       }
       calculatedTotalItems += realPrice * item.quantity;
-      return { ...item, price: realPrice, name: realTitle };
+      return { ...item, price: realPrice, name: realTitle, variationSize, variationColor };
     });
 
     let serverShippingCost = 0;
@@ -166,7 +174,9 @@ export async function processCheckout(prevState: CheckoutState, formData: any): 
         variation_id: item.id !== item.product_id ? item.id : null,
         quantity: item.quantity,
         unit_price: item.price,
-        total_price: item.price * item.quantity
+        total_price: item.price * item.quantity,
+        size_snapshot: item.variationSize,
+        color_snapshot: item.variationColor
       }));
 
       await supabaseAdmin.from("order_items").insert(dbItemsPayload);

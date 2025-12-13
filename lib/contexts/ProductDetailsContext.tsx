@@ -62,7 +62,7 @@ export function ProductDetailsProvider({
   const incrementQuantity = () => setQuantity(prev => prev + 1);
   const decrementQuantity = () => setQuantity(prev => (prev > 1 ? prev - 1 : 1));
 
-  const hasVariations = variations && variations.length > 0;
+  const hasVariations = variations && variations.reduce((acc, v) => acc + (v.stock || 0), 0) > 0;
 
   function resolveSelectedVariation(color: string | null, size: string | null) {
     if (!color || !size) return; 
