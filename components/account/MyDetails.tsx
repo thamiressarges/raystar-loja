@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useTransition } from 'react';
-import { User, MapPin, Lock, Save, Edit, X, KeyRound, Trash2 } from 'lucide-react';
+import { User, MapPin, Lock, Save, Edit, X, KeyRound, Trash2, Loader2 } from 'lucide-react';
 import { UserDetails } from '@/types'; 
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -112,6 +112,7 @@ export default function MyDetails({ userDetails, onDetailsSaved, updateUserDetai
   const [isPending, startTransition] = useTransition(); 
   const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false); 
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false); 
+  const [loadingCep, setLoadingCep] = useState(false);
   
   const getInitialFormData = (details: UserDetails) => {
     const addr = details.address || {} as any;
@@ -144,8 +145,9 @@ export default function MyDetails({ userDetails, onDetailsSaved, updateUserDetai
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleAddressChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleAddressChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
+    
     setFormData(prev => ({ 
       ...prev, 
       address: { 
@@ -153,6 +155,35 @@ export default function MyDetails({ userDetails, onDetailsSaved, updateUserDetai
         [name]: value 
       } 
     }));
+
+    // Se for o campo ZIP, verifica se tem 8 dígitos para buscar
+    if (name === 'zip') {
+        const cleanCep = value.replace(/\D/g, '');
+        if (cleanCep.length === 8) {
+            setLoadingCep(true);
+            try {
+                const response = await fetch(`https://brasilapi.com.br/api/cep/v2/${cleanCep}`);
+                if (response.ok) {
+                    const data = await response.json();
+                    setFormData(prev => ({
+                        ...prev,
+                        address: {
+                            ...prev.address,
+                            street: data.street || prev.address.street,
+                            neighborhood: data.neighborhood || prev.address.neighborhood,
+                            city: data.city || prev.address.city,
+                            state: data.state || prev.address.state,
+                            zip: value
+                        }
+                    }));
+                }
+            } catch (error) {
+                console.error("Erro ao buscar CEP", error);
+            } finally {
+                setLoadingCep(false);
+            }
+        }
+    }
   };
   
   const handleSaveDetails = () => {
@@ -285,7 +316,13 @@ export default function MyDetails({ userDetails, onDetailsSaved, updateUserDetai
               <div><label className="text-sm font-medium text-gray-700">Cidade</label><input type="text" name="city" value={formData.address.city} onChange={handleAddressChange} className="mt-1 w-full rounded-lg border border-gray-300 bg-white p-3 text-sm shadow-sm disabled:opacity-70 disabled:bg-gray-50" /></div>
               <div className="grid grid-cols-2 gap-4">
                 <div><label className="text-sm font-medium text-gray-700">Estado</label><input type="text" name="state" value={formData.address.state} onChange={handleAddressChange} className="mt-1 w-full rounded-lg border border-gray-300 bg-white p-3 text-sm shadow-sm disabled:opacity-70 disabled:bg-gray-50" /></div>
-                <div><label className="text-sm font-medium text-gray-700">CEP</label><input type="text" name="zip" value={formData.address.zip} onChange={handleAddressChange} className="mt-1 w-full rounded-lg border border-gray-300 bg-white p-3 text-sm shadow-sm disabled:opacity-70 disabled:bg-gray-50" /></div>
+                <div>
+                    <label className="text-sm font-medium text-gray-700 flex items-center justify-between">
+                        CEP
+                        {loadingCep && <Loader2 size={14} className="animate-spin text-black" />}
+                    </label>
+                    <input type="text" name="zip" value={formData.address.zip} onChange={handleAddressChange} className="mt-1 w-full rounded-lg border border-gray-300 bg-white p-3 text-sm shadow-sm disabled:opacity-70 disabled:bg-gray-50" />
+                </div>
               </div>
             </div>
           </div>
@@ -298,7 +335,7 @@ export default function MyDetails({ userDetails, onDetailsSaved, updateUserDetai
             <div className="space-y-1">
                 <h4 className="font-semibold text-gray-700 flex items-center gap-2"><KeyRound size={20} /> Alterar Senha</h4>
                 <p className="text-sm text-gray-500">Use letras, números e símbolos fortes para manter sua conta segura.</p>
-                <button onClick={() => setIsPasswordModalOpen(true)} className="mt-2 inline-flex items-center gap-2 rounded-lg bg-gray-900 px-5 py-2 text-sm font-medium text-white hover:bg-gray-700" disabled={isPending}><Lock size={16} />Alterar Senha</button>
+                <button onClick={() => setIsPasswordModalOpen(true)} className="mt-2 inline-flex items-center gap-2 rounded-lg bg-black px-5 py-2 text-sm font-medium text-white hover:bg-gray-800 transition" disabled={isPending}><Lock size={16} />Alterar Senha</button>
             </div>
             <hr className="border-gray-200" /> 
             <div className="space-y-1">
