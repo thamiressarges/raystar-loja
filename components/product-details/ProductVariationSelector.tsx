@@ -27,10 +27,10 @@ export default function ProductVariationSelector() {
     setSelectedVariation,
   } = useProductDetails();
 
-  const availableVariations = useMemo(
-    () => groupVariationsByColor(variations),
-    [variations]
-  );
+  const availableVariations = useMemo(() => {
+    const activeVariations = variations.filter(v => (v.stock || 0) > 0);
+    return groupVariationsByColor(activeVariations);
+  }, [variations]);
 
   if (!product) return null;
 
