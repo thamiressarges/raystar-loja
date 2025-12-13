@@ -114,7 +114,6 @@ export default function MyDetails({ userDetails, onDetailsSaved, updateUserDetai
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false); 
   
   const getInitialFormData = (details: UserDetails) => {
-    // CORREÇÃO AQUI: Adicionado 'as any' para evitar erro de tipo em objeto vazio
     const addr = details.address || {} as any;
     return {
       name: safeStr(details.name),
@@ -305,7 +304,7 @@ export default function MyDetails({ userDetails, onDetailsSaved, updateUserDetai
             <div className="space-y-1">
                 <h4 className="font-semibold text-red-600 flex items-center gap-2"><Trash2 size={20} /> Deletar Conta</h4>
                 <p className="text-sm text-gray-500">Essa ação é <strong>irreversível</strong>. Todos os seus dados serão permanentemente excluídos.</p>
-                <button onClick={() => setIsDeleteModalOpen(true)} className="mt-2 inline-flex items-center gap-2 rounded-lg bg-red-600 px-5 py-2 text-sm font-medium text-white hover:bg-red-700" disabled={isPending}><Trash2 size={16} />Deletar Conta</button>
+                <button type="button" onClick={() => setIsDeleteModalOpen(true)} className="mt-2 inline-flex items-center gap-2 rounded-lg bg-red-600 px-5 py-2 text-sm font-medium text-white hover:bg-red-700" disabled={isPending}><Trash2 size={16} />Deletar Conta</button>
             </div>
         </div>
       </div>
