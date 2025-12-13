@@ -177,7 +177,15 @@ export default function OrderDetailsModal({ isOpen, onClose, order }: OrderDetai
                             <div className="relative h-10 w-10 bg-gray-100 rounded-md overflow-hidden shrink-0">
                                 {productImage ? <Image src={productImage} alt="" fill className="object-cover"/> : <div className="flex items-center justify-center h-full w-full text-gray-400"><ShoppingCart size={16}/></div>}
                             </div>
-                            <div><p className="font-bold text-gray-900">{item.name}</p><p className="text-gray-500 text-xs">Qtd: {item.quantity}</p></div>
+                            <div>
+                                <p className="font-bold text-gray-900">{item.name}</p>
+                                {(item.size || item.color) && (
+                                    <p className="text-xs text-gray-500 font-medium">
+                                        {item.size && `Tam: ${item.size}`} {item.color && `| Cor: ${item.color}`}
+                                    </p>
+                                )}
+                                <p className="text-gray-500 text-xs mt-0.5">Qtd: {item.quantity}</p>
+                            </div>
                         </div>
                         <p className="font-medium text-gray-900">{formatPrice(item.unit_price)}</p>
                         </div>

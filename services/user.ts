@@ -31,14 +31,17 @@ export async function getUserOrders(page: number = 1, limit: number = 10) {
   const from = (page - 1) * limit;
   const to = from + limit - 1;
 
-  
   const { data: rawOrders, count, error } = await supabase
     .from('orders')
     .select(`
       id, created_at, status, total_amount,
       payments!payments_order_id_fkey ( id, status, value, form, installments, payload ),
       deliveries!deliveries_order_id_fkey ( id, status, cost, deadline_days, tracking_code, type, address ),
-      order_items ( id, quantity, unit_price, total_price, variation_id, products ( title, photos ) ),
+      order_items ( 
+        id, quantity, unit_price, total_price, variation_id, 
+        products ( title, photos ),
+        variations ( tamanho, cor ) 
+      ),
       users!orders_client_id_fkey ( address )
     `, { count: 'exact' })
     .eq('client_id', user.id)
@@ -91,7 +94,9 @@ export async function getUserOrders(page: number = 1, limit: number = 10) {
         quantity: item.quantity,
         unit_price: item.unit_price,
         total_price: item.total_price,
-        image: item.products?.photos?.[0]
+        image: item.products?.photos?.[0],
+        size: item.variations?.tamanho,
+        color: item.variations?.cor
       }))
     };
   });
