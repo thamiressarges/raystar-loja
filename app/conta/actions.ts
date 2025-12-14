@@ -3,7 +3,6 @@
 import { createSupabaseServerClient } from '@/lib/server';
 import { createClient } from '@supabase/supabase-js';
 import { revalidatePath } from 'next/cache';
-import { redirect } from 'next/navigation';
 import { updateProfileSchema, updatePasswordSchema } from '@/lib/schemas';
 
 export async function updateUserDetails(formData: any) { 
@@ -18,7 +17,6 @@ export async function updateUserDetails(formData: any) {
     return { success: false, error: parsed.error.issues[0].message };
   }
 
-  
   const updates = {
     ...parsed.data,
     updated_at: new Date().toISOString(),
@@ -75,6 +73,10 @@ export async function deleteAccountAction(formData: FormData) {
         return { success: false, error: "Senha incorreta." };
     }
 
+    if (!process.env.SUPABASE_SERVICE_ROLE_KEY) {
+        return { success: false, error: "Erro de configuração no servidor." };
+    }
+
     const supabaseAdmin = createClient(
         process.env.NEXT_PUBLIC_SUPABASE_URL!,
         process.env.SUPABASE_SERVICE_ROLE_KEY!,
@@ -88,5 +90,6 @@ export async function deleteAccountAction(formData: FormData) {
     }
 
     await supabase.auth.signOut();
-    redirect('/');
+    
+    return { success: true, message: "Conta excluída com sucesso." };
 }

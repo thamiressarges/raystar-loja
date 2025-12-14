@@ -4,6 +4,7 @@ import { useState, useEffect, useTransition } from 'react';
 import { User, MapPin, Lock, Save, Edit, X, KeyRound, Trash2, Loader2 } from 'lucide-react';
 import { UserDetails } from '@/types'; 
 import { toast } from 'react-toastify';
+import { useRouter } from 'next/navigation';
 import 'react-toastify/dist/ReactToastify.css';
 
 interface MyDetailsProps {
@@ -108,6 +109,7 @@ const DeleteAccountModal = ({ isOpen, onClose, onConfirmDelete, isPending }: Del
 
 export default function MyDetails({ userDetails, onDetailsSaved, updateUserDetailsAction, updatePasswordAction, deleteAccountAction }: MyDetailsProps) {
   
+  const router = useRouter();
   const [isEditing, setIsEditing] = useState(false);
   const [isPending, startTransition] = useTransition(); 
   const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false); 
@@ -156,7 +158,6 @@ export default function MyDetails({ userDetails, onDetailsSaved, updateUserDetai
       } 
     }));
 
-    // Se for o campo ZIP, verifica se tem 8 dígitos para buscar
     if (name === 'zip') {
         const cleanCep = value.replace(/\D/g, '');
         if (cleanCep.length === 8) {
@@ -260,9 +261,12 @@ export default function MyDetails({ userDetails, onDetailsSaved, updateUserDetai
   const handleDeleteAccount = (formData: FormData) => {
     startTransition(async () => {
       const result = await deleteAccountAction(formData);
+      
       if (result.success) {
         toast.success(result.message);
         setIsDeleteModalOpen(false);
+        router.push('/');
+        router.refresh();
       } else {
         toast.error(result.error);
       }
