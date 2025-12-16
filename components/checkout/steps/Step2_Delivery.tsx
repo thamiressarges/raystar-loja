@@ -94,13 +94,15 @@ export default function Step2Delivery({ onAddressSelect, currentAddress, shippin
   }, [supabase]);
 
   useEffect(() => {
+  if (!method) { 
     if (currentAddress?.isPickup) {
       setMethod('pickup');
     } else if (currentAddress?.zipCode) {
       setMethod('delivery');
       setCep(currentAddress.zipCode.replace(/(\d{5})(\d{3})/, "$1-$2"));
     }
-  }, [currentAddress]);
+  }
+}, [currentAddress, method]);
 
   const handleCepFormat = (e: React.ChangeEvent<HTMLInputElement>) => {
     let val = e.target.value.replace(/\D/g, '').slice(0, 8);
